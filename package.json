@@ -1,0 +1,12 @@
+{
+  "name": "BlogProject",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server(api)\"",
+    "start": "concurrently \"npm start --prefix client\" \"npm start --prefix server(api)\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}

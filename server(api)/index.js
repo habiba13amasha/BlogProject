@@ -1,32 +1,43 @@
-import express from "express"
-import mongoose from "mongoose"
-import dotenv from "dotenv"
-import userRouter from "./routes/userRoutes.js"
-import authRouter from "./routes/authRoutes.js"
+// server(api)/index.js
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import userRouter from "./routes/userRoutes.js";
+import authRouter from "./routes/authRoutes.js";
 
+dotenv.config(); // يجب أن يكون هذا في بداية الكود
 
-dotenv.config() // يجب أن يكون هذا في بداية الكود
+const app = express();
 
-const app=express()
+// Middleware لتحليل JSON
+app.use(express.json());
 
-app.use(express.json())
+// Routes
+app.use("/api/user", userRouter); // يعني route هو /api/user/test
+app.use("/api/auth", authRouter);
 
-mongoose.connect(process.env.MONGO)
-.then(()=>{console.log("Database is Connected")}).catch((err)=>{console.log("connection failed")})
-
-
-app.listen(3000, () =>console.log("Server running on port 3000") );
-
-app.use("/api/user",userRouter); //means route is (api/user/test)
-
-app.use("/api/auth",authRouter);
-
-app.use((err,req,res,next)=>{     //middleware for errors (Error Handling Middleware)
-  const statusCode=err.statusCode || 500;
-  const message=err.message || "Internal Server Error";
+// Error Handling Middleware
+app.use((err, req, res, next) => {     
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
   res.status(statusCode).json({
-    success:false,
+    success: false,
     statusCode,
     message
-  })
+  });
+});
+
+// الاتصال بقاعدة البيانات والبدء في تشغيل الخادم بعد النجاح
+mongoose.connect(process.env.MONGO, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 })
+.then(() => { 
+  console.log("Database is Connected"); 
+  // بدء الخادم بعد الاتصال بقاعدة البيانات
+  app.listen(3000, () => console.log("Server running on port 3000"));
+})
+.catch((err) => { 
+  console.log("Connection failed:", err.message); 
+  process.exit(1); // إنهاء العملية إذا فشل الاتصال
+});
