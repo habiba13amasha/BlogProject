@@ -86,7 +86,7 @@ export default function SignUp() {
                  <Spinner size="sm"/>
                  <span className="pl-3">Loading....</span>
                 </>
-              ) : "Sign UP"
+              ) : "Sign Up"
               }
             </Button>
           </form>
