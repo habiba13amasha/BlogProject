@@ -2,8 +2,8 @@ import { configureStore,combineReducers } from '@reduxjs/toolkit'
 import userReducer from './user/userSlice'
 import {persistReducer,persistStore} from "redux-persist"
 import storage from "redux-persist/lib/storage"
-import { version } from 'react'
-const rootReducer=combineReducers({
+
+const rootReducer=combineReducers({   //combineReducers  تقوم بدمج جميع الـ Reducers في تطبيقكِ في Reducer واحد يسمى rootReducer.
   user: userReducer,
 
 })
