@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
-import { HiMenu, HiX } from "react-icons/hi"; // أيقونات القائمة المنسدلة
-
+import { HiMenu, HiX } from "react-icons/hi"; // أيقونات القائمة المنسد
+import {useSelector} from "react-redux"
+import {Avatar, Dropdown} from "flowbite-react"
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const path = useLocation().pathname;
-
+  const {currentUser}=useSelector(state=>state.user)
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md border-b-2">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -59,10 +60,34 @@ export default function Header() {
             <AiOutlineSearch className="text-gray-600 dark:text-gray-200" />
           </button>
 
-          {/* Sign In button */}
-          <Link to="/sign-in" className="bg-gradient-to-r from-indigo-500 to-pink-500 text-blue-50 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90">
-            Sign In
-          </Link>
+          {currentUser?(
+            <>
+            <Dropdown arrowIcon={false} inline  label={
+              <Avatar alt="user" img={currentUser.ProfilePicture} rounded/>
+            }>
+              <Dropdown.Header className="block text-sm">
+                <span className="block text-sm">@{currentUser.username}</span>
+                <span className="block text-sm font-medium truncate">{currentUser.email}</span>
+              </Dropdown.Header>
+              <Link to="/dashboard?tab=profile">
+                <Dropdown.Item>Profile</Dropdown.Item>
+              </Link>
+              <Dropdown.Divider/>
+              <Dropdown.Item>Sign Out</Dropdown.Item>
+
+
+            </Dropdown>
+            </>
+          ):
+          (
+            <>
+            <Link to="/sign-in" className="bg-gradient-to-r from-indigo-500 to-pink-500 text-blue-50 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90">
+              Sign In
+            </Link>
+           </>
+          )}
+         
+          
 
           {/* Menu Toggle for small screens */}
           <button

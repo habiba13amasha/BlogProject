@@ -10,6 +10,7 @@
     "concurrently": "^8.0.1"
   },
   "dependencies": {
+    "BlogProject": "file:",
     "jsonwebtoken": "^9.0.2"
   }
 }
