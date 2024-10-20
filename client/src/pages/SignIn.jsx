@@ -3,7 +3,7 @@ import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { useState } from "react";
 import {useDispatch,useSelector} from "react-redux"
 import { signInStart,signInSuccess,signInFailure } from "../redux/user/userSlice";
-import { OAuth } from "../components//OAuth";
+import OAuth from "../components/OAuth";
 export default function SignIn() {
   const [formData, setFormData] = useState({
     email: '',

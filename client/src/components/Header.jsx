@@ -1,14 +1,21 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
+import { FaMoon ,FaSun} from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi"; // أيقونات القائمة المنسد
-import {useSelector} from "react-redux"
+import {useSelector,useDispatch} from "react-redux"
 import {Avatar, Dropdown} from "flowbite-react"
+import {toggleTheme} from "../redux/theme/themeSlice"
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const path = useLocation().pathname;
   const {currentUser}=useSelector(state=>state.user)
+  const {theme}=useSelector(state=>state.theme)
+
+  const dispatch=useDispatch()
+
+ 
+
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md border-b-2">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -52,7 +59,11 @@ export default function Header() {
         <div className="flex items-center space-x-4">
           {/* Moon Icon */}
           <button className="hidden lg:flex w-10 h-10 items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full">
-            <FaMoon className="text-gray-600 dark:text-gray-200" />
+           {theme==="dark" ?
+            <FaMoon className="text-gray-600 dark:text-gray-200" onClick={()=>dispatch(toggleTheme())}/>
+            :
+            <FaSun className="text-gray-600 dark:text-gray-200" onClick={()=>dispatch(toggleTheme())}/>
+            }
           </button>
 
           {/* Small Search Icon for small screens */}
@@ -63,10 +74,10 @@ export default function Header() {
           {currentUser?(
             <>
             <Dropdown arrowIcon={false} inline  label={
-              <Avatar alt="user" img={currentUser.ProfilePicture} rounded/>
+              <Avatar alt="user" img={currentUser.profilePicture} rounded/>
             }>
               <Dropdown.Header className="block text-sm">
-                <span className="block text-sm">@{currentUser.username}</span>
+                <span className="block text-sm">@{currentUser.userName}</span>
                 <span className="block text-sm font-medium truncate">{currentUser.email}</span>
               </Dropdown.Header>
               <Link to="/dashboard?tab=profile">

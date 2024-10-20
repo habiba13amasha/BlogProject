@@ -10,7 +10,9 @@ const firebaseConfig = {
   projectId: "blogproject-221c3",
   storageBucket: "blogproject-221c3.appspot.com",
   messagingSenderId: "335815702280",
-  appId: "1:335815702280:web:1037e2541922c4ee679ebd"
+  appId: "1:335815702280:web:1037e2541922c4ee679ebd",
+  headers:{"Cross-Origin-Opener-Policy": "same-origin-allow-popups"}
+
 };
 
 // Initialize Firebase

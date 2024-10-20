@@ -4,10 +4,18 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes.js";
 import authRouter from "./routes/authRoutes.js";
-
+import cors from "cors"
 dotenv.config(); // يجب أن يكون هذا في بداية الكود
 
 const app = express();
+// إضافة الهيدر "Cross-Origin-Opener-Policy" لكل الطلبات
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  next();
+});
+
+
+app.use(cors());
 
 // Middleware لتحليل JSON
 app.use(express.json());
