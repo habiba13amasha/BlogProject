@@ -1,5 +1,8 @@
+import plugin from 'flowbite/plugin';
+
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class', // تفعيل الوضع الداكن بناءً على الفئة
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,5 +11,5 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [ require('flowbite/plugin')],
+  plugins: [plugin], // استخدام Flowbite كـ plugin
 }

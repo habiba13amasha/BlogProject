@@ -17,7 +17,7 @@ export default function Header() {
  
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md border-b-2">
+    <nav className="bg-white dark:bg-gray-700 shadow-md border-b-2">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-xl font-semibold text-gray-800 dark:text-white">
