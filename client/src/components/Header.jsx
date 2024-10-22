@@ -74,7 +74,7 @@ export default function Header() {
           {currentUser?(
             <>
             <Dropdown arrowIcon={false} inline  label={
-              <Avatar alt="user" img={currentUser.profilePicture} rounded/>
+              <Avatar alt="user" img={currentUser.profilePhoto} rounded/>
             }>
               <Dropdown.Header className="block text-sm">
                 <span className="block text-sm">@{currentUser.userName}</span>

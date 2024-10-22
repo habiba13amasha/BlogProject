@@ -14,13 +14,13 @@ export default function DashSidebar() {
       }
     },[location.search])
   return (
-    <Sidebar className="w-full md:w-56">
+    <Sidebar className="w-full md:w-56 bg-indigo-300 ">
         <Sidebar.Items>
-            <Sidebar.ItemGroup>
+            <Sidebar.ItemGroup className="px-1">
                 <Link to="/dashboard?tab=profile">
-                  <Sidebar.Item active={tab==="profile"} icon={HiUser} label="user" labelColor="dark" >Profile</Sidebar.Item>
+                  <Sidebar.Item active={tab==="profile"} icon={HiUser} label="user" labelColor="dark" className="py-1">Profile</Sidebar.Item>
                 </Link>
-                <Sidebar.Item  icon={HiArrowSmRight} className="cursor-pointer">Sign Out</Sidebar.Item>
+                <Sidebar.Item  icon={HiArrowSmRight} className="cursor-pointer " >Sign Out</Sidebar.Item>
             </Sidebar.ItemGroup>
         </Sidebar.Items>
     </Sidebar>
