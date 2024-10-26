@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import cors from "cors"
+import cookieParser from "cookie-parser";
 dotenv.config(); // يجب أن يكون هذا في بداية الكود
 
 const app = express();
@@ -19,7 +20,7 @@ app.use(cors());
 
 // Middleware لتحليل JSON
 app.use(express.json());
-
+app.use(cookieParser())
 // Routes
 app.use("/api/user", userRouter); // يعني route هو /api/user/test
 app.use("/api/auth", authRouter);

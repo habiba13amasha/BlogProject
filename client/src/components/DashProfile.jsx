@@ -16,14 +16,14 @@ export default function DashProfile() {
     const handleChangeImage=(e)=>{
       const file=e.target.files[0]
       if (file){
-        setImageFile(file)
-        setImageFileUrl(URL.createObjectURL(file))
+        setImageFile(file)  // تخزين الملف في حالة `imageFile`
+        setImageFileUrl(URL.createObjectURL(file)) // عرض الصورة بشكل مؤقت قبل رفعها
       }
 
     }
    useEffect(()=>{
      if (imageFile){
-       uploadImage()
+       uploadImage() // استدعاء دالة رفع الصورة فقط عند تحديد صورة جديدة
      }
    },[imageFile])
 
@@ -40,24 +40,25 @@ export default function DashProfile() {
 //  }
   //}
    setImageFileUploadError(null)
-    const storage=getStorage(app)
-    const fileName=new Date().getTime() + imageFile.name
+    const storage=getStorage(app) // ينادي على Firebase Storage
+    const fileName=new Date().getTime() + imageFile.name // توليد اسم فريد للملف باستخدام timestamp
     const storageRef=ref(storage,fileName)
-    const uploadTask=uploadBytesResumable(storageRef,fileName)
-    uploadTask.on("state_changed", (snapshot) => {
+    const uploadTask=uploadBytesResumable(storageRef,fileName) //  يبدأ عملية رفع الملف باستخدام uploadBytesResumable الذي يسمح بمراقبة تقدم التحميل
+    uploadTask.on("state_changed",
+       (snapshot) => {  //يمثل لقطة لحالة عملية الرفع الحالية. توفر هذه اللقطة معلومات مثل حجم البيانات التي تم نقلها (bytesTransferred) وإجمالي حجم الملف (totalBytes).
       const progress=((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-      setImageFileUploadProgress(progress.toFixed(0))},
+      setImageFileUploadProgress(progress.toFixed(0))}, // هنا يتم تعيين قيمة progress (بعد تحويلها إلى عدد صحيح)
       (error) => {
-        setImageFileUploadError("could not upload image(File must be less than 2MB)"),
+        setImageFileUploadError(error.message || "could not upload image(File must be less than 2MB)"),
         setImageFileUploadProgress(null)
         setImageFile(null)
         setImageFileUrl(null)
-
       },
-
-      ()=>{
+       // عند الانتهاء من الرفع
+      ()=>{  
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
-          setImageFileUrl(downloadURL)
+          setImageFileUrl(downloadURL) //  الحصول على رابط التنزيل للصورة ليتم عرضها من  Firebase مباشرة
+
         })
       }
     )
@@ -68,8 +69,7 @@ export default function DashProfile() {
         <form className="flex flex-col gap-5 ">
           <input type="file"  accept="image/*"  onChange={handleChangeImage} ref={filePikerRef} hidden/>
             <div className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full" onClick={()=>filePikerRef.current.click()}>
-              {imageFileUploadProgress&&
-              
+              {imageFileUploadProgress &&
                 <CircularProgressbar value={imageFileUploadProgress || 0 } text={`${imageFileUploadProgress}%`} 
                  strokeWidth={5} 
                  styles={{
