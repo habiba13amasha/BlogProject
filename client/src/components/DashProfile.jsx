@@ -1,4 +1,5 @@
 import { Alert, Button, Modal, TextInput } from "flowbite-react"
+import {Link} from "react-router-dom"
 import { useEffect, useRef, useState } from "react"
 import {useSelector,useDispatch} from "react-redux"
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
@@ -7,9 +8,10 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { updateStart,updateSuccess,updateFailure,deleteStart,deleteSuccess,deleteFailure, signOutSuccess } from "../redux/user/userSlice"
 import {HiOutlineExclamationCircle} from "react-icons/hi"
+
 export default function DashProfile() {
     const dispatch=useDispatch()
-    const {currentUser,error } = useSelector(state => state.user)
+    const {currentUser,error,loading } = useSelector(state => state.user)
     const filePikerRef=useRef()
     const [imageFile,setImageFile]=useState(null)
     const [imageFileUrl,setImageFileUrl]=useState(null)
@@ -171,7 +173,14 @@ export default function DashProfile() {
             <TextInput type="text" id="userName" placeholder="userName" defaultValue={currentUser.userName} onChange={handleChange}/>
             <TextInput type="email" id="email" placeholder="email" defaultValue={currentUser.email} onChange={handleChange}/>
             <TextInput type="password" id="password" placeholder="password" onChange={handleChange} />
-            <Button type="submit" className="bg-indigo-700 text-blue-50">Update</Button>
+            <Button type="submit" className="bg-indigo-700 text-blue-50" disabled={loading || imageFileUploading}>
+              {loading ?"...loading" : "Update"}
+            </Button>
+            {currentUser.isAdmin&&(
+             <Link to={"/create-post"}>
+               <Button type="button" className="w-full">Create a post</Button>
+             </Link>
+            )}
         </form>
         <div className="text-red-500 flex justify-between mt-5">
             <span className="cursor-pointer" onClick={()=>setShowModal(true)}>Delete Account </span>
