@@ -57,4 +57,13 @@ export const test =  (req, res) => {
     next(error)
   }
  }
+
+ export const signOut=(req, res,next) => {
+   try{
+    res.clearCookie("access_token").status(200).json("User has been signOut")
+   }catch(error) {
+     next(error)
+   }
+
+ }
  
