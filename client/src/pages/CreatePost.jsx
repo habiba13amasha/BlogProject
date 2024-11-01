@@ -1,5 +1,5 @@
 import { Button, FileInput, Select, TextInput } from "flowbite-react";
-import ReactQuill from 'react-quill';
+import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 export default function CreatePost() {
   return (
@@ -17,13 +17,13 @@ export default function CreatePost() {
                     <option value="NodeJs">NodeJs</option>
                     <option value="express">Express</option>
                 </Select>
-                <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
-                  <FileInput type="file" accept="/image/*"/>
-                  <Button type="button" color="purple" size="sm">Upload an image</Button>
-                </div>
-                <ReactQuill theme="snow" placeholder="Write something....." className="mb-12 h-27" required/>
-                <Button type="submit" color="pink">Publish</Button>
             </div>
+            <div className="flex gap-4 items-center justify-between border-4 border-teal-400 border-dotted p-3">
+                <FileInput type="file" accept="/image/*"/>
+                <Button type="button" color="blue" size="md">Upload an image</Button>
+            </div>
+            <ReactQuill theme="snow" placeholder="Write something....." className="mb-10 h-72" required/>
+            <Button type="submit" color="blue">Publish</Button>
         </form>
     </div>
    </>

@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes.js";
 import authRouter from "./routes/authRoutes.js";
+import postRouter from "./routes/postRoutes.js";
 import cors from "cors"
 import cookieParser from "cookie-parser";
 dotenv.config(); // يجب أن يكون هذا في بداية الكود
@@ -24,7 +25,7 @@ app.use(cookieParser())
 // Routes
 app.use("/api/user", userRouter); // يعني route هو /api/user/test
 app.use("/api/auth", authRouter);
-
+app.use("/api/post",postRouter);
 // Error Handling Middleware
 app.use((err, req, res, next) => {     
   const statusCode = err.statusCode || 500;
