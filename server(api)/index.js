@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use(cors());
+app.use(cors({credentials: true}));
 
 // Middleware لتحليل JSON
 app.use(express.json());
