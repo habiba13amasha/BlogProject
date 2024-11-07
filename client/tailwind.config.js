@@ -1,8 +1,8 @@
-import plugin from 'flowbite/plugin';
+import flowbitePlugin from 'flowbite/plugin';
+import scrollbarPlugin from 'tailwind-scrollbar';
 
-/** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class', // تفعيل الوضع الداكن بناءً على الفئة
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -11,5 +11,5 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [plugin], // استخدام Flowbite كـ plugin
+  plugins: [flowbitePlugin, scrollbarPlugin],
 }
