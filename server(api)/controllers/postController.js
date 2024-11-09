@@ -26,8 +26,8 @@ export const createPost =async(req,res,next)=>{
 
 export const getPosts = async(req,res,next)=>{
     try{
-       const startIndex=parseInt(req.query.startIndex)||0
-       const limit=parseInt(req.query.limit)||9
+       const startIndex=parseInt(req.query.startIndex)||0  //startIndex: يمثل الفهرس الذي نبدأ منه جلب المنشورات
+       const limit=parseInt(req.query.limit)||9  //limit: يمثل الحد الأقصى لعدد المنشورات التي سيتم جلبها في كل طلب.
        const sortDirection=parseInt(req.query.order ==="asc"?1:-1)
        const posts=await Post.find({
         ...(req.query.userId && {userId:req.query.userId}),
@@ -43,14 +43,14 @@ export const getPosts = async(req,res,next)=>{
 
        }).sort({updatedAt:sortDirection}).skip(startIndex).limit(limit)
 
-       const totalPosts=await Post.countDocuments()
+       const totalPosts=await Post.countDocuments()   //totalPosts: يحسب العدد الإجمالي لجميع المنشورات في قاعدة البيانات باستخدام 
        const now=new Date()
        const oneMonthAge=new Date(
         now.getFullYear(),
         now.getMonth() - 1,
         now.getDate(),
        )
-       const oneMonthPosts=await Post.countDocuments({
+       const oneMonthPosts=await Post.countDocuments({  //oneMonthPosts: يحسب عدد المنشورات التي تم إنشاؤها في آخر شهر.
         createdAt:{$gte:oneMonthAge}
        })
        res.status(200).json({posts,totalPosts,oneMonthPosts})

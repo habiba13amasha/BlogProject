@@ -5,6 +5,22 @@ import {Link} from "react-router-dom"
 export default function DashboardPost() {
   const {currentUser}=useSelector(state=>state.user)
   const [userPosts,setUserPosts]=useState({})
+  const[showMore,setShowMore] = useState(true)
+  const handleShowMore=async()=>{
+    const startIndex=userPosts.length;
+    try {
+      const res=await fetch(`/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`)
+      const data=await res.json()
+      if(res.ok){
+        setUserPosts([...userPosts,...data.posts]) //يتم تحديث حالة المنشورات (userPosts) بدمج المنشورات الجديدة التي تم جلبها (data.posts) مع المنشورات الحالية.,,,يتم استخدام ... (spread operator) لدمج المنشورات.
+        if(data.posts.length<9){
+          setShowMore(false)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(()=>{
      const fetchPosts=async ()=>{
       try{
@@ -12,10 +28,13 @@ export default function DashboardPost() {
         const data=await response.json()
         if(response.ok){
           setUserPosts(data.posts)
+          if(data.posts.length<9){
+             setShowMore(false)
+          }
         }
         
-      }catch(erorr){
-        console.log(error)
+      }catch(err){
+        console.log(err)
       }
      }
      if(currentUser.isAdmin){
@@ -64,6 +83,9 @@ export default function DashboardPost() {
             </Table.Body>
           ))}
         </Table>
+        {showMore&&
+         <button onClick={handleShowMore} className="w-full text-teal-500 self-center text-sm py-7">Show more</button>
+        }
        </>
       :
       <p>You have no posts yet!</p>
