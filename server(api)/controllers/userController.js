@@ -66,4 +66,39 @@ export const test =  (req, res) => {
    }
 
  }
+
+ export const getUsers=async(req,res,next)=>{
+  if(!req.user.isAdmin){
+     return next(errorHandler(403,"You are not allowed to see all users"))
+  }
+
+  try {
+    const startIndex=parseInt(req.query.startIndex)||0  //startIndex: يمثل الفهرس الذي نبدأ منه جلب المنشورات
+    const limit=parseInt(req.query.limit)||9  //limit: يمثل الحد الأقصى لعدد المنشورات التي سيتم جلبها في كل طلب.
+    const sortDirection=parseInt(req.query.order ==="asc"?1:-1)
+    const users=await User.find()
+    .sort({updatedAt:sortDirection}).skip(startIndex).limit(limit)
+
+    const usersWithoutPassword=users.map((user)=>{
+      const{password,...rest}=user._doc
+      return rest
+    })
+
+    const totalUsers=await User.countDocuments()   //totalPosts: يحسب العدد الإجمالي لجميع المنشورات في قاعدة البيانات باستخدام 
+       const now=new Date()
+       const oneMonthAge=new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        now.getDate(),
+       )
+       const oneMonthUsers=await User.countDocuments({  //oneMonthPosts: يحسب عدد المنشورات التي تم إنشاؤها في آخر شهر.
+        createdAt:{$gte:oneMonthAge}
+       })
+       res.status(200).json({users:usersWithoutPassword,totalUsers,oneMonthUsers})
+  } catch (error) {
+    next(error)
+  }
+ }
+
+
  
