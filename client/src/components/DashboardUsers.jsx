@@ -12,7 +12,7 @@ export default function DashboardUsers() {
   const handleDeleteUser=async()=>{
     setShowModal(false)
     try {
-      const res=await fetch(`/api/user/deleteuser/${userIdToDelete}`,{
+      const res=await fetch(`/api/user/delete/${userIdToDelete}`,{
         method: 'DELETE',
       })
       const data=await res.json()
