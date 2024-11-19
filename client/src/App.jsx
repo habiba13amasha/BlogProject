@@ -12,11 +12,13 @@ import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute';
 import CreatePost from './pages/createPost';
 import UpdatePost from './pages/UpdatePost';
 import PostPage from './pages/PostPage';
+import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
   return (
     <div className="flex flex-col min-h-screen">
       <BrowserRouter>
+        <ScrollToTop/>
         <Header /> {/* to show header in all pages */}
         <main className="flex-grow">
           <Routes>
