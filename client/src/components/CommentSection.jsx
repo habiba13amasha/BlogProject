@@ -1,11 +1,29 @@
 import { Alert, Button, Textarea } from "flowbite-react"
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import{useSelector} from "react-redux"
 import { Link } from "react-router-dom"
+import Comment from "./Comment"
 export default function CommentSection({postId}) {
   const [comment,setComment]=useState("")
   const[commentError,setCommentError]=useState(null)
   const {currentUser}=useSelector(state=>state.user)
+  const [comments,setComments]=useState([])
+  useEffect(()=>{
+    const getComments=async()=>{
+      try {
+       const res=await fetch(`/api/comment/getPostComments/${postId}`)
+       if(res.ok){
+         const data=await res.json()
+         setComments(data)
+       }
+ 
+      } catch (error) {
+        console.log(error.message);
+        
+      }
+    }
+    getComments()
+  },[postId])
   const handleSubmit=async(e)=>{
     e.preventDefault()
     if(comment.length>200){
@@ -23,6 +41,7 @@ export default function CommentSection({postId}) {
       if(res.ok){
         setComment("")
         setCommentError(null)
+        setComments([...comments, data]); // إضافة التعليق الجديد
       }
     } catch (error) {
       setCommentError(error.message)
@@ -59,7 +78,21 @@ export default function CommentSection({postId}) {
             <Alert color="failure" className="mt-5">{commentError}</Alert>
           )}
         </form>
-        
+        {comments.length===0 ? (
+           <p className="my-5 text-sm">No comments yet</p>
+        ):(
+         <>
+          <div className="text-sm my-5 flex items-center gap-2">
+            <p>Comments</p>
+            <div className="border border-gray-500 px-2 py-1 rounded-sm">
+               <p>{comments.length}</p>
+            </div>
+          </div>
+          {comments.map((comment)=>(
+            <Comment key={comment._id} comment={comment}/>
+          ))}
+         </>
+        )}
         
       )}
     </div>
