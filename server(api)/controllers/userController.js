@@ -86,13 +86,13 @@ export const test =  (req, res) => {
 
     const totalUsers=await User.countDocuments()   //totalPosts: يحسب العدد الإجمالي لجميع المنشورات في قاعدة البيانات باستخدام 
        const now=new Date()
-       const oneMonthAge=new Date(
+       const oneMonthAgo=new Date(
         now.getFullYear(),
         now.getMonth() - 1,
         now.getDate(),
        )
        const oneMonthUsers=await User.countDocuments({  //oneMonthPosts: يحسب عدد المنشورات التي تم إنشاؤها في آخر شهر.
-        updatedAt:{$gte:oneMonthAge}
+        updatedAt:{$gte:oneMonthAgo}
        })
        res.status(200).json({users:usersWithoutPassword,totalUsers,oneMonthUsers})
   } catch (error) {
