@@ -91,10 +91,10 @@ export const test =  (req, res) => {
         now.getMonth() - 1,
         now.getDate(),
        )
-       const oneMonthUsers=await User.countDocuments({  //oneMonthPosts: يحسب عدد المنشورات التي تم إنشاؤها في آخر شهر.
+       const lastMonthUsers=await User.countDocuments({  //oneMonthPosts: يحسب عدد المنشورات التي تم إنشاؤها في آخر شهر.
         updatedAt:{$gte:oneMonthAgo}
        })
-       res.status(200).json({users:usersWithoutPassword,totalUsers,oneMonthUsers})
+       res.status(200).json({users:usersWithoutPassword,totalUsers,lastMonthUsers})
   } catch (error) {
     next(error)
   }
