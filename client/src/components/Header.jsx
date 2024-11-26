@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation ,useNavigate} from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon ,FaSun} from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi"; // أيقونات القائمة المنسد
@@ -7,14 +7,33 @@ import {useSelector,useDispatch} from "react-redux"
 import {Avatar, Dropdown} from "flowbite-react"
 import {toggleTheme} from "../redux/theme/themeSlice"
 import { signOutSuccess } from "../redux/user/userSlice";
+import { useEffect } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const path = useLocation().pathname;
+  const location=useLocation()
   const {currentUser}=useSelector(state=>state.user)
   const {theme}=useSelector(state=>state.theme)
   const dispatch=useDispatch()
+  const [searchTerm,setSearchTerm]=useState("")
+  const navigate=useNavigate()
+  useEffect(()=>{
+      const urlParams=new URLSearchParams(location.search)
+      const searchTermFromUrl = urlParams.get("search")
+      if(searchTermFromUrl){
+        setSearchTerm(searchTermFromUrl)
+      }
+    
+  },[location.search])
 
+  const handleSubmit=async(e)=>{
+    e.preventDefault()
+    const urlParams=new URLSearchParams(location.search)
+    urlParams.set("searchTerm",searchTerm)
+    const searchQuery=urlParams.toString()
+    navigate(`/search?${searchQuery}`)
+  }
   const handleSignOut=async() => {
     try {
       const res=await fetch("/api/user/signout",{
@@ -46,14 +65,16 @@ export default function Header() {
         <div className="flex items-center space-x-6">
           {/* Search bar for larger screens */}
           <div className="hidden lg:flex items-center">
-            <div className="relative">
+            <form className="relative" onSubmit={handleSubmit}>
               <input
                 type="text"
                 className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <AiOutlineSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-            </div>
+            </form>
           </div>
 
           {/* Links for large screens */}
