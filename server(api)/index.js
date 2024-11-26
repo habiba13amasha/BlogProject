@@ -6,11 +6,11 @@ import userRouter from "./routes/userRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
-
+import path from "path"
 import cors from "cors"
 import cookieParser from "cookie-parser";
 dotenv.config(); // يجب أن يكون هذا في بداية الكود
-
+const __direname=path.resolve()
 const app = express();
 // إضافة الهيدر "Cross-Origin-Opener-Policy" لكل الطلبات
 app.use((req, res, next) => {
@@ -29,8 +29,11 @@ app.use("/api/user", userRouter); // يعني route هو /api/user/test
 app.use("/api/auth", authRouter);
 app.use("/api/post",postRouter);
 app.use("/api/comment",commentRouter);
-
+app.use(express.static(path.join(__dirname,"/client/dist")))
 // Error Handling Middleware
+app.get("*",(req,res)=>{
+  res.sendFile(path.join(__dirname, "client,dist,index.html"));
+})
 app.use((err, req, res, next) => {     
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
@@ -55,3 +58,4 @@ mongoose.connect(process.env.MONGO, {
   console.log("Connection failed:", err.message); 
   process.exit(1); // إنهاء العملية إذا فشل الاتصال
 });
+
